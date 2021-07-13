@@ -4,12 +4,16 @@ import android.app.Application;
 import android.content.Context;
 import com.facebook.react.PackageList;
 import com.facebook.react.ReactApplication;
+import com.RNFetchBlob.RNFetchBlobPackage;
+import com.reactnativecommunity.cameraroll.CameraRollPackage;
+import com.rnfs.RNFSPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.soloader.SoLoader;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+//import com.rnfs.RNFSPackage; // FOR LOCAL STORAGE
 
 public class MainApplication extends Application implements ReactApplication {
 
@@ -26,7 +30,19 @@ public class MainApplication extends Application implements ReactApplication {
           List<ReactPackage> packages = new PackageList(this).getPackages();
           // Packages that cannot be autolinked yet can be added manually here, for example:
           // packages.add(new MyReactNativePackage());
+          //packages.add(new RNFSPackage()); // FOR LOCAL STORAGE
+          //packages.add(new RNFetchBlobPackage()); //SAVE TO GALLERY
+          //packages.add(new CameraRollPackage()); //SAVE TO GALLERY
           return packages;
+
+          // YG DIATAS NORMALNYA, YG DIBWH INI YG DITAMBAHIN UTK LOCAL STORAGE
+          // return Arrays.<ReactPackage>asList(
+          //   new MainReactPackage(),
+            // new RNFetchBlobPackage(), //SAVE TO GALLERY
+            // new CameraRollPackage(), //SAVE TO GALLERY
+          //   new RNFSPackage(), // <---- add comma
+          //   new RNFSPackage() // <---------- add package
+          // );
         }
 
         @Override

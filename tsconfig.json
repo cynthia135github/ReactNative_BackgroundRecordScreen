@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+    "baseUrl": "./app/",
+    "paths":{
+      "@components": ["components"],
+      "@models": ["models"],
+      "@screens": ["screens"],
+      "@services": ["services"],
+      "@theme": ["theme"],
+      "@utils": ["utils"]
+    },
     "allowJs": false,
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,

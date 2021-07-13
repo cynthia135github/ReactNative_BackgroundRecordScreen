@@ -1,157 +1,184 @@
 import React from "react"
-import { Image, ImageStyle, Platform, TextStyle, View, ViewStyle } from "react-native"
+import { Image, Picker, ImageStyle, Platform, TextStyle, View, ImageBackground, StyleSheet } from "react-native"
 import { useNavigation } from "@react-navigation/native"
 import { observer } from "mobx-react-lite"
-import { BulletItem, Button, Header, Text, Screen, Wallpaper } from "../../components"
-import { color, spacing } from "../../theme"
+import { BulletItem, Button, Header, Text, SimpleInput, SimpleButton } from "@components"
+import { color, spacing } from "@theme"
 import { Api } from "../../services/api"
 import { save } from "../../utils/storage"
+import { useState, useEffect } from 'react';
+import RadioGroup, { RadioButtonProps } from 'react-native-radio-buttons-group';
 export const logoIgnite = require("./logo-ignite.png")
 export const heart = require("./heart.png")
 
-const FULL: ViewStyle = { flex: 1 }
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-  paddingHorizontal: spacing[4],
-}
-const DEMO: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: "#5D2555",
-}
-const BOLD: TextStyle = { fontWeight: "bold" }
-const DEMO_TEXT: TextStyle = {
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-}
-const HEADER: TextStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[5] - 1,
-  paddingHorizontal: 0,
-}
-const HEADER_TITLE: TextStyle = {
-  ...BOLD,
-  fontSize: 12,
-  lineHeight: 15,
-  textAlign: "center",
-  letterSpacing: 1.5,
-}
-const TITLE: TextStyle = {
-  ...BOLD,
-  fontSize: 28,
-  lineHeight: 38,
-  textAlign: "center",
-  marginBottom: spacing[5],
-}
-const TAGLINE: TextStyle = {
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-  marginBottom: spacing[4] + spacing[1],
-}
-const IGNITE: ImageStyle = {
-  marginVertical: spacing[6],
-  alignSelf: "center",
-}
-const LOVE_WRAPPER: ViewStyle = {
-  flexDirection: "row",
-  alignItems: "center",
-  alignSelf: "center",
-}
-const LOVE: TextStyle = {
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-}
-const HEART: ImageStyle = {
-  marginHorizontal: spacing[2],
-  width: 10,
-  height: 10,
-  resizeMode: "contain",
-}
-const HINT: TextStyle = {
-  color: "#BAB6C8",
-  fontSize: 12,
-  lineHeight: 15,
-  marginVertical: spacing[2],
-}
+const radioButtonsData: RadioButtonProps[] = [{
+  id: '1', // acts as primary key, should be unique and non-empty string
+  label: 'Pria',
+  value: 'Pria'
+}, {
+  id: '2',
+  label: 'Wanita',
+  value: 'Wanita'
+}]
 
-export const DemoScreen = observer(function DemoScreen() {
+export const DaftarAkun = observer(function DaftarAkun() {
   const navigation = useNavigation()
   const goBack = () => navigation.goBack()
 
-  const demoReactotron = React.useMemo(
-    () => async () => {
-      console.tron.log("Your Friendly tron log message")
-      console.tron.logImportant("I am important")
-      console.tron.display({
-        name: "DISPLAY",
-        value: {
-          numbers: 1,
-          strings: "strings",
-          booleans: true,
-          arrays: [1, 2, 3],
-          objects: {
-            deeper: {
-              deeper: {
-                yay: "👾",
-              },
-            },
-          },
-          functionNames: function hello() {
-            /* dummy function */
-          },
-        },
-        preview: "More control with display()",
-        important: true,
-        image: {
-          uri:
-            "https://avatars2.githubusercontent.com/u/3902527?s=200&u=a0d16b13ed719f35d95ca0f4440f5d07c32c349a&v=4",
-        },
-      })
-      // make an API call for the demo
-      // Don't do API like this, use store's API
-      const demo = new Api()
-      demo.setup()
-      demo.getUser("1")
-      // Let's do some async storage stuff
-      await save("Cool Name", "Boaty McBoatface")
-    },
-    [],
-  )
+  var [name, setname] = useState("Joe");
+  var [password, setPassword] = useState("123456");
+  var [confirmpassword, setConfirmPassword] = useState("123456");
+  var [username, setUsername] = useState("xxx@gmail.com");
+  var [phonenumber, setPhoneNum] = useState("0812345678");
+  var [passwordToogle, setPasswordToogle] = useState(true);
+  var [passwordToogle2, setPasswordToogle2] = useState(true);
+
+  const [selectedValue, setSelectedValue] = useState("Negara");
+  const [radioButtons, setRadioButtons] = useState<RadioButtonProps[]>(radioButtonsData)
+
+  //Constructor
+  useEffect(() => {
+
+  });
+
+  const goToLogin = () => navigation.navigate("welcome");
+
+  const pressDaftar = () => {
+
+  }
+
+  const onPressRadioButton = (radioButtonsArray: RadioButtonProps[]) => {
+    setRadioButtons(radioButtonsArray);
+  }
 
   return (
-    <View style={FULL}>
-      <Wallpaper />
-      <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-        <Header
-          headerTx="demoScreen.howTo"
-          leftIcon="back"
-          onLeftPress={goBack}
-          style={HEADER}
-          titleStyle={HEADER_TITLE}
-        />
-        <Text style={TITLE} preset="header" tx="demoScreen.title" />
-        <Text style={TAGLINE} tx="demoScreen.tagLine" />
-        <BulletItem text="Load up Reactotron!  You can inspect your app, view the events, interact, and so much more!" />
-        <BulletItem text="Integrated here, Navigation with State, TypeScript, Storybook, Solidarity, and i18n." />
-        <View>
-          <Button
-            style={DEMO}
-            textStyle={DEMO_TEXT}
-            tx="demoScreen.reactotron"
-            onPress={demoReactotron}
+    <View style={styles.container}>
+      <ImageBackground
+        source={require('./background.png')}
+        style={styles.bgImage}
+      >
+
+        <View style={{ marginTop: 50, justifyContent: 'flex-start', paddingLeft: 20 }}>
+          <Text style={{ fontSize: 35, color: '#fefdfa', fontWeight: 'bold' }}>Mendaftar</Text>
+          <Text style={{ fontSize: 35, color: '#fefdfa', fontWeight: 'bold' }}> Akun Baru</Text>
+        </View>
+
+        <View style={styles.cardLogin}>
+          <View style={{ height: 5 }}></View>
+          <SimpleInput
+            icon={"user-circle"}
+            placeholder={"Nama Lengkap"}
+            keyboardType={"default"}
+            value={name}
+            onChangeText={(values) => setname(values)}
           />
-          <Text style={HINT} tx={`demoScreen.${Platform.OS}ReactotronHint`} />
+          <View style={{ height: 10 }}></View>
+          <SimpleInput
+            icon={"lock"}
+            placeholder={"Kata Sandi"}
+            isPassword={true}
+            secure={passwordToogle}
+            value={password}
+            onTooglePassword={() => setPasswordToogle(!passwordToogle)}
+            onChangeText={(values) => setPassword(values)}
+          />
+          <View style={{ height: 10 }}></View>
+          <SimpleInput
+            icon={"lock"}
+            placeholder={"Konfirmasi Kata Sandi"}
+            isPassword={true}
+            secure={passwordToogle2}
+            value={confirmpassword}
+            onTooglePassword={() => setPasswordToogle2(!passwordToogle2)}
+            onChangeText={(values) => setConfirmPassword(values)}
+          />
+          <View style={{ height: 10 }}></View>
+          <SimpleInput
+            icon={"envelope"}
+            placeholder={"Alamat Email"}
+            keyboardType={"email-address"}
+            value={username}
+            onChangeText={(values) => setUsername(values)}
+          />
+          <View style={{ height: 10 }}></View>
+          <SimpleInput
+            icon={"mobile"}
+            placeholder={"Nomor Handphone"}
+            keyboardType={"numeric"}
+            value={phonenumber}
+            onChangeText={(values) => setPhoneNum(values)}
+          />
+          <Picker
+            selectedValue={selectedValue}
+            style={{ height: 50, width: 150 }}
+            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+          >
+            <Picker.Item label="Indonesia" value="Indonesia" />
+            <Picker.Item label="Amerika" value="Amerika" />
+          </Picker>
+          <View style={{ height: 10 }}></View>
+          <Text style={styles.gender}>Jenis Kelamin</Text>
+          <View style={{ height: 10 }}></View>
+          <RadioGroup
+            radioButtons={radioButtons}
+            layout='row'
+            onPress={onPressRadioButton}
+          />
+          <View style={{ height: 10 }}></View>
+          <SimpleButton
+            text='Daftar'
+            onPress={() => pressDaftar()}
+          />
+          <Text style={{ marginTop: 22, fontSize: 18, color: color.storybookTextColor }}>Sudah mempunyai akun? <Text style={styles.forgotPassword} onPress={() => goToLogin()}>Masuk sekarang</Text></Text>
         </View>
-        <Image source={logoIgnite} style={IGNITE} />
-        <View style={LOVE_WRAPPER}>
-          <Text style={LOVE} text="Made with" />
-          <Image source={heart} style={HEART} />
-          <Text style={LOVE} text="by Infinite Red" />
-        </View>
-      </Screen>
+
+      </ImageBackground>
     </View>
   )
 })
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#d1ded8',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+  },
+
+  cardLogin: {
+    backgroundColor: "#fefdfa",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    height: 605,
+    marginTop: 15,
+    marginBottom: 0,
+    alignItems: "center"
+  },
+
+  bgImage: {
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    resizeMode: 'cover',
+    position: "absolute"
+  },
+
+  forgotPassword: {
+    textDecorationLine: 'underline',
+    color: '#8B008B',
+    fontSize: 18,
+    marginTop: 15
+  },
+
+  containerItem: {
+    margin: 0
+  },
+
+  gender: {
+    fontSize: 15,
+    marginLeft: -188,
+    color: color.storybookTextColor,
+    fontWeight: 'bold'
+  }
+});

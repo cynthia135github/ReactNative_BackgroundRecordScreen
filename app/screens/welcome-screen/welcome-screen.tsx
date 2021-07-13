@@ -1,115 +1,154 @@
-import React from "react"
-import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView } from "react-native"
-import { useNavigation } from "@react-navigation/native"
+import React, { Component } from "react"
+import { View, Image, ViewStyle, TextStyle, ImageStyle, SafeAreaView, ImageBackground, StyleSheet } from "react-native"
+import { NavigationRouteContext, useNavigation } from "@react-navigation/native"
 import { observer } from "mobx-react-lite"
-import { Button, Header, Screen, Text, Wallpaper } from "../../components"
-import { color, spacing, typography } from "../../theme"
-const bowserLogo = require("./bowser.png")
+import { Button, Header, Screen, Text, Wallpaper, SimpleButton, SimpleInput } from "@components"
+import { color, spacing, typography, helper } from "@theme"
+import { useState, useEffect } from 'react';
+import BackgroundTimer from 'react-native-background-timer'; // Background Timer
+import { captureScreen } from "react-native-view-shot"; // Screenshot
 
-const FULL: ViewStyle = { flex: 1 }
-const CONTAINER: ViewStyle = {
-  backgroundColor: color.transparent,
-  paddingHorizontal: spacing[4],
-}
-const TEXT: TextStyle = {
-  color: color.palette.white,
-  fontFamily: typography.primary,
-}
-const BOLD: TextStyle = { fontWeight: "bold" }
-const HEADER: TextStyle = {
-  paddingTop: spacing[3],
-  paddingBottom: spacing[4] + spacing[1],
-  paddingHorizontal: 0,
-}
-const HEADER_TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 12,
-  lineHeight: 15,
-  textAlign: "center",
-  letterSpacing: 1.5,
-}
-const TITLE_WRAPPER: TextStyle = {
-  ...TEXT,
-  textAlign: "center",
-}
-const TITLE: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 28,
-  lineHeight: 38,
-  textAlign: "center",
-}
-const ALMOST: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 26,
-  fontStyle: "italic",
-}
-const BOWSER: ImageStyle = {
-  alignSelf: "center",
-  marginVertical: spacing[5],
-  maxWidth: "100%",
-}
-const CONTENT: TextStyle = {
-  ...TEXT,
-  color: "#BAB6C8",
-  fontSize: 15,
-  lineHeight: 22,
-  marginBottom: spacing[5],
-}
-const CONTINUE: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-  backgroundColor: "#5D2555",
-}
-const CONTINUE_TEXT: TextStyle = {
-  ...TEXT,
-  ...BOLD,
-  fontSize: 13,
-  letterSpacing: 2,
-}
-const FOOTER: ViewStyle = { backgroundColor: "#20162D" }
-const FOOTER_CONTENT: ViewStyle = {
-  paddingVertical: spacing[4],
-  paddingHorizontal: spacing[4],
-}
 
-export const WelcomeScreen = observer(function WelcomeScreen() {
-  const navigation = useNavigation()
-  const nextScreen = () => navigation.navigate("demo")
+export const LoginScreen = observer(function LoginScreen() {
+  const navigation = useNavigation();
+  var [username, setUsername] = useState("xxx@gmail.com");
+  var [password, setPassword] = useState("123456");
+  var [passwordToogle, setPasswordToogle] = useState(true);
+
+  // Screenshot path
+  const [imageURI, setImageURI] = useState(
+    'https://raw.githubusercontent.com/AboutReact/sampleresource/master/sample_img.png',
+  );
+  const [savedImagePath, setSavedImagePath] = useState('');
+
+  //screenshot
+  const takeScreenShot = () => {
+    // To capture Screenshot
+    captureScreen({
+      // Either png or jpg (or webm Android Only), Defaults: png
+      format: 'jpg',
+      // Quality 0.0 - 1.0 (only available for jpg)
+      quality: 0.8, 
+    }).then(
+      //callback function to get the result URL of the screnshot
+      (uri) => {
+        setSavedImagePath(uri);
+        setImageURI(uri);
+        console.log("screenshot: " + uri);
+        return uri;
+      },
+      (error) => console.error('Oops, Something Went Wrong', error),
+    );
+  };
+
+  //Constructor
+  useEffect(() => {
+    // BackgroundTimer.runBackgroundTimer(() => {
+    //   //setiap 3 seconds 
+    //   takeScreenShot();
+    //   //console.log('Timer');
+    // },
+    //   10000);
+
+    //BackgroundTimer.stopBackgroundTimer(); //after this call all code on background stop run.
+
+  });
+
+  const pressLogin = () => navigation.navigate("cobarecord");
+
+  const pressForgotPassword = () => {
+
+  }
+
+  const pressDaftarAkun = () => navigation.navigate("demo");
 
   return (
-    <View style={FULL}>
-      <Wallpaper />
-      <Screen style={CONTAINER} preset="scroll" backgroundColor={color.transparent}>
-        <Header headerTx="welcomeScreen.poweredBy" style={HEADER} titleStyle={HEADER_TITLE} />
-        <Text style={TITLE_WRAPPER}>
-          <Text style={TITLE} text="Your new app, " />
-          <Text style={ALMOST} text="almost" />
-          <Text style={TITLE} text="!" />
-        </Text>
-        <Text style={TITLE} preset="header" tx="welcomeScreen.readyForLaunch" />
-        <Image source={bowserLogo} style={BOWSER} />
-        <Text style={CONTENT}>
-          This probably isn't what your app is going to look like. Unless your designer handed you
-          this screen and, in that case, congrats! You're ready to ship.
-        </Text>
-        <Text style={CONTENT}>
-          For everyone else, this is where you'll see a live preview of your fully functioning app
-          using Ignite.
-        </Text>
-      </Screen>
-      <SafeAreaView style={FOOTER}>
-        <View style={FOOTER_CONTENT}>
-          <Button
-            style={CONTINUE}
-            textStyle={CONTINUE_TEXT}
-            tx="welcomeScreen.continue"
-            onPress={nextScreen}
-          />
+    <View style={styles.container}>
+      <ImageBackground
+        source={require('./background.png')}
+        style={styles.bgImage}
+      >
+
+        <View style={{ marginTop: 75, justifyContent: 'flex-start', paddingLeft: 20 }}>
+          <Text style={{ fontSize: 35, color: '#fefdfa', fontWeight: 'bold' }}>Masuk ke</Text>
+          <Text style={{ fontSize: 35, color: '#fefdfa', fontWeight: 'bold' }}> Aplikasi</Text>
         </View>
-      </SafeAreaView>
+
+        <View style={styles.cardLogin}>
+          <View style={{ height: 40 }}></View>
+          <SimpleInput
+            icon={"envelope"}
+            placeholder={"Alamat Email"}
+            keyboardType={"email-address"}
+            value={username}
+            onChangeText={(values) => setUsername(values)}
+          />
+          <View style={{ height: 40 }}></View>
+          <SimpleInput
+            icon={"lock"}
+            placeholder={"Kata Sandi"}
+            isPassword={true}
+            secure={passwordToogle}
+            value={password}
+            onTooglePassword={() => setPasswordToogle(!passwordToogle)}
+            onChangeText={(values) => setPassword(values)}
+          />
+          <View style={{ height: 40 }}></View>
+          <SimpleButton
+            text='Masuk'
+            onPress={() => pressLogin()}
+          />
+          <Text style={styles.forgotPassword} onPress={() => pressForgotPassword()} >Lupa Kata Sandi?</Text>
+          <Text style={{ marginTop: 22, fontSize: 18, color: color.storybookTextColor }}>Belum punya akun? Daftar <Text style={styles.forgotPassword} onPress={() => pressDaftarAkun()}>di sini</Text></Text>
+        </View>
+
+      </ImageBackground>
     </View>
   )
+
 })
+
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#d1ded8',
+    alignItems: 'stretch',
+    justifyContent: 'flex-start',
+  },
+
+  cardLogin: {
+    backgroundColor: "#fefdfa",
+    borderTopLeftRadius: 25,
+    borderTopRightRadius: 25,
+    height: 540,
+    marginTop: 80,
+    alignItems: "center"
+  },
+
+  bgImage: {
+    width: '100%',
+    height: '100%',
+    margin: 0,
+    resizeMode: 'cover',
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0
+  },
+
+  forgotPassword: {
+    textDecorationLine: 'underline',
+    color: '#8B008B',
+    fontSize: 18,
+    marginTop: 15
+  },
+
+
+});
+
+function componentDidMount() {
+  throw new Error("Function not implemented.")
+}
